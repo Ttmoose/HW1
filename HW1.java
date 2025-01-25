@@ -1,6 +1,6 @@
 
 /*
- * *** PLACE YOUR NAME / SECTION  HERE ***
+ * *** OMP 272/400C-002-SP25 ***
  *
  * Homework # 1 (Programming Assignment). This Java class defines some basic
  * manipulation operations on Linked-Lists and Stacks.
@@ -73,8 +73,6 @@ public class HW1 {
                 new_node.next = current.next;
                 current.next = new_node;
             }
-
-            return;
         }
 
 
@@ -86,12 +84,18 @@ public class HW1 {
          * found in the linked-list that is less than thr parameter value passed.
          */
         public void removeElementsLT ( int ltValue ) {
-
-            // YOUR CODE GOES HERE
-
-            return;
+            while (head != null && head.data < ltValue) {
+                head = head.next; // Move head forward
+            }
+            Node current = head;
+            while (current != null && current.next != null) {
+                if (current.next.data < ltValue) {
+                    current.next = current.next.next; // Skip nodes with data < ltValue
+                } else {
+                    current = current.next;
+                }
+            }
         }
-
 
         /*
          * Method removeElement() - this method removes all nodes that contain a
@@ -99,17 +103,24 @@ public class HW1 {
          */
 
         public void removeElement ( int value ) {
-
-            // YOUR CODE GOES HERE
-
-            return;
+            while (head != null && head.data == value) {
+                head = head.next; // Move head forward
+            }
+            Node current = head;
+            while (current != null && current.next != null) {
+                if (current.next.data == value) {
+                    current.next = current.next.next; // Skip nodes with the specified value
+                } else {
+                    current = current.next;
+                }
+            }
         }
-
 
         /*
          * Method toString() - this is a helper method for printing / constructing
          * a string object from the linked-list.
          */
+
         public String toString () // Method to output the LinkedList as a String
         {
             String output = "[";
@@ -155,15 +166,23 @@ public class HW1 {
          *
          * The method should utilize the provided Stack class.
          */
+
         public static boolean isPalindrome(String input) {
 
             Stack<Character> stack = new Stack<>();
             input = input.toLowerCase().replaceAll("\\s+", "");
 
-            // Your CODE GOES HERE
-            return false;
-        }
+            for (char ch : input.toCharArray()) {
+                stack.push(ch);
+            }
 
+            for (char ch : input.toCharArray()) {
+                if (stack.pop() != ch) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         /*
          * Method findLargestk() - This method will return the largest index
@@ -180,12 +199,39 @@ public class HW1 {
          * pop elements off the passed in stack, place them in a temp stack. Then when
          * completed, place them all back in teh original stack.
          */
+
+        
+        /**
+        * Method findLargestK() - This method will return the largest index
+        * position in the stack for the value specified by the parameter 'k'.
+        *
+        * @param stack The stack of integers to search.
+        * @param k The value to find the largest index for.
+        * @return The largest index of the value `k` in the stack, or -1 if not found.
+        */
         public static int findLargestK(Stack<Integer> stack, int k) {
-
-            // YOUR CODE GOES HERE
-            return -1;
+            Stack<Integer> tempStack = new Stack<>();
+            int currentIndex = 0;
+            int largestIndex = -1; // Initialize as -1 to signify `k` not found.
+    
+            // Transfer all elements to tempStack and track the indices
+            while (!stack.isEmpty()) {
+                int value = stack.pop();
+                tempStack.push(value);
+                if (value == k) {
+                    largestIndex = currentIndex;
+                }
+                currentIndex++;
+            }
+    
+            // Restore the original stack
+            while (!tempStack.isEmpty()) {
+                stack.push(tempStack.pop());
+            }
+    
+            return largestIndex;
+            
         }
-
     }  // End class Stacks
 
 
@@ -200,7 +246,8 @@ public class HW1 {
      *********************************/
 
     public static int algorithmAnalysis1(int n, int m) {
-        int a = 0, b = 0;
+        int a = 0;
+        int b = 0;
 
         for (int i=0; i < n; i++)
             a+= Math.random();
@@ -219,7 +266,7 @@ public class HW1 {
         */
 
         // RETURN THE CORRECT OPTION NUMBER LISTED ABOVE
-        return -1;
+        return 3;
     }
 
 
@@ -240,7 +287,7 @@ public class HW1 {
          */
 
         // RETURN THE CORRECT OPTION LISTED ABOVE
-        return -1;
+        return 2;
     }
 
 }
