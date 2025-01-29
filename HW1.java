@@ -79,36 +79,36 @@ public class HW1 {
         /*
          * Method removeElementsLT() - this method removes all nodes that contain a
          * value that is less than the provided parameter 'ltValue'.
+         * 
+         * Operates in Big O of 2n + 1, where n = LinkedList.length
+         * Iterates through node data and if value is less than perameter 'ltValue'
+         * Invoke removal of node from LinkedList
          *
          * The method will invoke the method removeElements for each element
          * found in the linked-list that is less than thr parameter value passed.
          */
         public void removeElementsLT ( int ltValue ) {
             while (head != null && head.data < ltValue) {
-                head = head.next; // Move head forward
-            }
-            Node current = head;
-            while (current != null && current.next != null) {
-                if (current.next.data < ltValue) {
-                    current.next = current.next.next; // Skip nodes with data < ltValue
-                } else {
-                    current = current.next;
-                }
+                removeElement(ltValue); 
+                head = head.next;
             }
         }
 
         /*
          * Method removeElement() - this method removes all nodes that contain a
          * value equal to the value the provided parameter 'value'.
+         * 
+         * Operates in Big 0 of 2n + 1, 
+         * 
+         * Iterates through LinkedList untill element needing removal is found, 
+         * links the following node up to it as next pointer
+         * Skips node with specified value
          */
 
         public void removeElement ( int value ) {
-            while (head != null && head.data == value) {
-                head = head.next; // Move head forward
-            }
-            Node current = head;
-            while (current != null && current.next != null) {
-                if (current.next.data == value) {
+            Node current = head; // create buffer to account for first node == value
+            while (current != null && current.next != null) { // checks if not null and can move to
+                if (current.next.data == value) { 
                     current.next = current.next.next; // Skip nodes with the specified value
                 } else {
                     current = current.next;
@@ -133,7 +133,6 @@ public class HW1 {
         }
 
     } // End class LinkedList
-
 
 
 
@@ -165,19 +164,24 @@ public class HW1 {
          * Moreover, spaces are ignore, so both 'race car' and 'racecar' are plaindromes.
          *
          * The method should utilize the provided Stack class.
+         * 
+         * Operates in Big 0 of 3n + 1
+         * 
+         * Iterates input into reognisable characters without spaces, and into an array
+         * Pushes all characters of input into a stack, testing them against the array
+         * If any are found to be out of place, is returned as false
          */
 
         public static boolean isPalindrome(String input) {
+            Stack<Character> stack = new Stack<>(); // Creates stack of characters 
+            input = input.toLowerCase().replaceAll("\\s+", ""); // interprets into set of lowercase without spaces
 
-            Stack<Character> stack = new Stack<>();
-            input = input.toLowerCase().replaceAll("\\s+", "");
-
-            for (char ch : input.toCharArray()) {
+            for (char ch : input.toCharArray()) { // Pushes chars into stack
                 stack.push(ch);
             }
 
-            for (char ch : input.toCharArray()) {
-                if (stack.pop() != ch) {
+            for (char ch : input.toCharArray()) { 
+                if (stack.pop() != ch) {    // Compares input chars to stack chars, if they do not line up return false
                     return false;
                 }
             }
@@ -199,38 +203,41 @@ public class HW1 {
          * pop elements off the passed in stack, place them in a temp stack. Then when
          * completed, place them all back in teh original stack.
          */
-
         
-        /**
-        * Method findLargestK() - This method will return the largest index
-        * position in the stack for the value specified by the parameter 'k'.
-        *
-        * @param stack The stack of integers to search.
-        * @param k The value to find the largest index for.
-        * @return The largest index of the value `k` in the stack, or -1 if not found.
-        */
+         /**
+         * Method findLargestK() - This method will return the largest index
+         * position in the stack for the value specified by the parameter 'k'.
+         * 
+         * Operates in n^2, where n = stack.length + 1
+         *
+         * @param stack The stack of integers to search.
+         * @param k The value to find the largest index for.
+         * @return The largest index of the value `k` in the stack, or -1 if not found.
+         */
+
         public static int findLargestK(Stack<Integer> stack, int k) {
             Stack<Integer> tempStack = new Stack<>();
-            int currentIndex = 0;
-            int largestIndex = -1; // Initialize as -1 to signify `k` not found.
-    
-            // Transfer all elements to tempStack and track the indices
-            while (!stack.isEmpty()) {
+            int currentIndex = 0;  // currentIndex stores the last element popped
+            int largestIndex = -1; // largestIndex stores the location of k, set to -1 if 'k' not found within stack.
+            boolean firstk = false; // first k The boolean used to let end if statement
+            
+            // Transfers all elements to tempStack and tracks the indices
+            while (!stack.isEmpty()) { 
                 int value = stack.pop();
                 tempStack.push(value);
-                if (value == k) {
-                    largestIndex = currentIndex;
+                if (value == k && !firstk) {  // if value = 'k' when reading from stack, first instance of it can be recorded
+                    firstk = true;    // first k The boolean used to let end if statement
+                    largestIndex = currentIndex + 1; // largestIndex stores the location of k, +1 to account for default value of largestIndex 
                 }
-                currentIndex++;
+                currentIndex++; // currentIndex records until the last element popped, giving total number of elements within stack
             }
-    
-            // Restore the original stack
-            while (!tempStack.isEmpty()) {
+
+            // Restores the original stack
+            while (!tempStack.isEmpty()) { 
                 stack.push(tempStack.pop());
             }
-    
-            return largestIndex;
-            
+
+           return currentIndex - largestIndex; // total length of stack subtracted by the first recorded instance of 'k'
         }
     }  // End class Stacks
 
@@ -269,7 +276,6 @@ public class HW1 {
         return 3;
     }
 
-
     public static int algorithmAnalysis2(int n) {
         int i, j, k = 0;
         for (i = n/2; i <= n; i++)
@@ -291,4 +297,3 @@ public class HW1 {
     }
 
 }
-
